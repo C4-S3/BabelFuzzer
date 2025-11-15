@@ -1,4 +1,4 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
+use criterion::{criterion_group, criterion_main, Criterion, BenchmarkId};
 use proto_fuzzer::protocols::grpc::client_pool::GrpcPool;
 use std::sync::Arc;
 use tokio::runtime::Runtime;
@@ -34,11 +34,11 @@ fn throughput_benchmark(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
 
     // Spawn test server in the background
-    let server_handle = rt.spawn(async {
+    let _server_handle = rt.spawn(async {
         use server::echo::echo_server::EchoServer;
         use tonic::transport::Server;
 
-        let addr = "[::1]:50060".parse().unwrap();
+        let addr = "[::1]:50061".parse().unwrap();
         let echo_service = server::EchoService::default();
 
         Server::builder()
@@ -59,38 +59,37 @@ fn throughput_benchmark(c: &mut Criterion) {
             BenchmarkId::from_parameter(format!("pool_size_{}", pool_size)),
             pool_size,
             |b, &pool_size| {
-                b.to_async(&rt).iter(|| async {
-                    // Create pool
-                    let pool = Arc::new(
-                        GrpcPool::new("http://[::1]:50060", pool_size)
-                            .await
-                            .expect("Failed to create pool")
-                    );
+                b.iter(|| {
+                    rt.block_on(async {
+                        // Create pool
+                        let pool = Arc::new(
+                            GrpcPool::new("http://[::1]:50061", pool_size)
+                                .await
+                                .expect("Failed to create pool")
+                        );
 
-                    // Run 1000 echo requests in parallel
-                    let mut handles = vec![];
-                    for i in 0..1000 {
-                        let pool_clone = pool.clone();
-                        let handle = tokio::spawn(async move {
-                            let data = format!("request_{}", i).into_bytes();
-                            pool_clone.echo(black_box(data)).await
-                        });
-                        handles.push(handle);
-                    }
+                        // Run 1000 echo requests in parallel
+                        let mut handles = vec![];
+                        for i in 0..1000 {
+                            let pool_clone = pool.clone();
+                            let handle = tokio::spawn(async move {
+                                let data = format!("request_{}", i).into_bytes();
+                                pool_clone.echo(data).await
+                            });
+                            handles.push(handle);
+                        }
 
-                    // Wait for all requests to complete
-                    for handle in handles {
-                        let _ = handle.await.unwrap();
-                    }
+                        // Wait for all requests to complete
+                        for handle in handles {
+                            let _ = handle.await.unwrap();
+                        }
+                    })
                 });
             },
         );
     }
 
     group.finish();
-
-    // Clean up server (it will be aborted when runtime drops)
-    drop(server_handle);
 }
 
 criterion_group!(benches, throughput_benchmark);
