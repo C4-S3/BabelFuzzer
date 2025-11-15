@@ -1,3 +1,4 @@
+pub mod core_types;
 pub mod engine;
 pub mod protocols;
 pub mod detection;
