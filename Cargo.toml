@@ -11,6 +11,10 @@ path = "src/lib.rs"
 name = "proto-fuzzer"
 path = "src/main.rs"
 
+[[bench]]
+name = "throughput"
+harness = false
+
 [dependencies]
 tokio = { version = "1.48", features = ["full"] }
 futures = "0.3"
