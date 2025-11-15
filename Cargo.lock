@@ -1262,6 +1262,7 @@ dependencies = [
  "anyhow",
  "arbitrary",
  "async-trait",
+ "base64",
  "bytes",
  "chrono",
  "clap",
