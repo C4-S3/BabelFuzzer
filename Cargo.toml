@@ -1,0 +1,37 @@
+[package]
+name = "proto-fuzzer"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "proto_fuzzer"
+path = "src/lib.rs"
+
+[[bin]]
+name = "proto-fuzzer"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1.48", features = ["full"] }
+futures = "0.3"
+tonic = "0.14"
+prost = "0.14"
+quinn = "0.11"
+h3 = "0.0.8"
+bytes = "1.11"
+arbitrary = { version = "1.4", features = ["derive"] }
+rand = "0.9"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1.0"
+thiserror = "2.0"
+dashmap = "6.1"
+parking_lot = "0.12"
+sha2 = "0.10"
+
+[dev-dependencies]
+proptest = "1.9"
+criterion = "0.7"
