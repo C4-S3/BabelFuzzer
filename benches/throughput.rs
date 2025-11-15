@@ -38,7 +38,7 @@ fn throughput_benchmark(c: &mut Criterion) {
         use server::echo::echo_server::EchoServer;
         use tonic::transport::Server;
 
-        let addr = "[::1]:50061".parse().unwrap();
+        let addr = "127.0.0.1:50061".parse().unwrap();
         let echo_service = server::EchoService::default();
 
         Server::builder()
@@ -63,7 +63,7 @@ fn throughput_benchmark(c: &mut Criterion) {
                     rt.block_on(async {
                         // Create pool
                         let pool = Arc::new(
-                            GrpcPool::new("http://[::1]:50061", pool_size)
+                            GrpcPool::new("http://127.0.0.1:50061", pool_size)
                                 .await
                                 .expect("Failed to create pool")
                         );

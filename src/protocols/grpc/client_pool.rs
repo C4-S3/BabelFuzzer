@@ -102,7 +102,7 @@ mod tests {
 
         // Spawn server on a background task
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50057".parse().unwrap();
+            let addr = "127.0.0.1:50057".parse().unwrap();
             let echo_service = server::EchoService::default();
 
             Server::builder()
@@ -116,7 +116,7 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Create a pool with 3 channels
-        let pool = GrpcPool::new("http://[::1]:50057", 3)
+        let pool = GrpcPool::new("http://127.0.0.1:50057", 3)
             .await
             .expect("Failed to create pool");
 
@@ -147,7 +147,7 @@ mod tests {
 
         // Spawn server on a background task
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50058".parse().unwrap();
+            let addr = "127.0.0.1:50058".parse().unwrap();
             let echo_service = server::EchoService::default();
 
             Server::builder()
@@ -161,7 +161,7 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Create a pool with 2 channels
-        let pool = GrpcPool::new("http://[::1]:50058", 2)
+        let pool = GrpcPool::new("http://127.0.0.1:50058", 2)
             .await
             .expect("Failed to create pool");
 
@@ -181,7 +181,7 @@ mod tests {
 
         // Spawn server on a background task
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50059".parse().unwrap();
+            let addr = "127.0.0.1:50059".parse().unwrap();
             let echo_service = server::EchoService::default();
 
             Server::builder()
@@ -196,7 +196,7 @@ mod tests {
 
         // Create a pool with 4 channels
         let pool = std::sync::Arc::new(
-            GrpcPool::new("http://[::1]:50059", 4)
+            GrpcPool::new("http://127.0.0.1:50059", 4)
                 .await
                 .expect("Failed to create pool")
         );

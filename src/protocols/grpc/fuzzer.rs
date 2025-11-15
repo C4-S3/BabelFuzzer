@@ -169,7 +169,7 @@ mod tests {
 
         // Spawn server on a background task
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50054".parse().unwrap();
+            let addr = "127.0.0.1:50054".parse().unwrap();
             let echo_service = server::EchoService::default();
 
             Server::builder()
@@ -183,7 +183,7 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Create client
-        let client = GrpcClient::new("http://[::1]:50054")
+        let client = GrpcClient::new("http://127.0.0.1:50054")
             .await
             .expect("Failed to create client");
 
@@ -214,7 +214,7 @@ mod tests {
 
         // Spawn server on a background task
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50055".parse().unwrap();
+            let addr = "127.0.0.1:50055".parse().unwrap();
             let echo_service = server::EchoService::default();
 
             Server::builder()
@@ -228,7 +228,7 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Create client
-        let client = GrpcClient::new("http://[::1]:50055")
+        let client = GrpcClient::new("http://127.0.0.1:50055")
             .await
             .expect("Failed to create client");
 
@@ -282,7 +282,7 @@ mod tests {
 
         // Spawn slow server
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50056".parse().unwrap();
+            let addr = "127.0.0.1:50056".parse().unwrap();
             let echo_service = slow_server::SlowEchoService::default();
 
             Server::builder()
@@ -296,7 +296,7 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Create client
-        let client = GrpcClient::new("http://[::1]:50056")
+        let client = GrpcClient::new("http://127.0.0.1:50056")
             .await
             .expect("Failed to create client");
 

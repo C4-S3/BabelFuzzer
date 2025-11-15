@@ -95,7 +95,7 @@ mod tests {
 
         // Spawn server on a background task
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50052".parse().unwrap();
+            let addr = "127.0.0.1:50052".parse().unwrap();
             let echo_service = server::EchoService::default();
 
             Server::builder()
@@ -109,7 +109,7 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Create client and send request
-        let client = GrpcClient::new("http://[::1]:50052")
+        let client = GrpcClient::new("http://127.0.0.1:50052")
             .await
             .expect("Failed to create client");
 
@@ -119,7 +119,7 @@ mod tests {
             .expect("Failed to echo");
 
         assert_eq!(response, b"hi");
-        assert_eq!(client.endpoint(), "http://[::1]:50052");
+        assert_eq!(client.endpoint(), "http://127.0.0.1:50052");
     }
 
     #[tokio::test]
@@ -129,7 +129,7 @@ mod tests {
 
         // Spawn server on a background task
         let _server_handle = tokio::spawn(async {
-            let addr = "[::1]:50053".parse().unwrap();
+            let addr = "127.0.0.1:50053".parse().unwrap();
             let echo_service = server::EchoService::default();
 
             Server::builder()
@@ -143,7 +143,7 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Create client and send request
-        let client = GrpcClient::new("http://[::1]:50053")
+        let client = GrpcClient::new("http://127.0.0.1:50053")
             .await
             .expect("Failed to create client");
 
