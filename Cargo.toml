@@ -19,35 +19,54 @@ name = "throughput"
 harness = false
 
 [dependencies]
+# Async runtime
 tokio = { version = "1.48", features = ["full"] }
 futures = "0.3"
+
+# gRPC support (production ready)
 tonic = "0.14"
 prost = "0.14"
 tonic-prost = "0.14"
-quinn = "0.11"
-h3 = "0.0.8"
-bytes = "1.11"
-arbitrary = { version = "1.4", features = ["derive"] }
-rand = "0.9"
+
+# HTTP/3 support (planned for Phase 1 - not yet implemented)
+# See ROADMAP.md Phase 1 for implementation timeline
+# These dependencies are declared but not yet used in the codebase
+quinn = "0.11"  # QUIC protocol implementation (RFC 9000) - for HTTP/3 client
+h3 = "0.0.8"     # HTTP/3 frame handling (RFC 9114) - for HTTP/3 fuzzing
+
+# Common utilities
+bytes = "1.11"              # Efficient byte buffer handling
+arbitrary = { version = "1.4", features = ["derive"] }  # Fuzzing input generation
+rand = "0.9"                # Random number generation for mutations
+
+# Serialization
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+
+# CLI and logging
 clap = { version = "4.5", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-anyhow = "1.0"
-thiserror = "2.0"
-dashmap = "6.1"
-parking_lot = "0.12"
-sha2 = "0.10"
-async-trait = "0.1"
-chrono = { version = "0.4", features = ["serde"] }
-base64 = "0.22"
+
+# Error handling
+anyhow = "1.0"              # Flexible error handling
+thiserror = "2.0"           # Custom error types
+
+# Concurrency and data structures
+dashmap = "6.1"             # Concurrent hashmap for corpus management
+parking_lot = "0.12"        # Faster synchronization primitives
+async-trait = "0.1"         # Async traits for protocol abstraction
+
+# Utilities
+sha2 = "0.10"               # SHA256 hashing for corpus deduplication
+chrono = { version = "0.4", features = ["serde"] }  # Timestamp handling
+base64 = "0.22"             # Base64 encoding for crash reports
 
 [build-dependencies]
-tonic-prost-build = "0.14"
-protobuf-src = "2.1"
+tonic-prost-build = "0.14"  # Build-time protobuf compilation
+protobuf-src = "2.1"         # Protobuf source files
 
 [dev-dependencies]
-proptest = "1.9"
-criterion = "0.7"
-tempfile = "3.0"
+proptest = "1.9"    # Property-based testing for fuzzing invariants
+criterion = "0.7"   # Benchmarking framework for performance testing
+tempfile = "3.0"    # Temporary file handling for tests
