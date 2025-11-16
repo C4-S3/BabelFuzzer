@@ -2,6 +2,9 @@
 name = "proto-fuzzer"
 version = "0.1.0"
 edition = "2021"
+description = "Production-ready gRPC protocol fuzzer with automatic reflection-based schema discovery (HTTP/3 support planned)"
+license = "MIT"
+repository = "https://github.com/C4-S3/BabelFuzzer"
 
 [lib]
 name = "proto_fuzzer"
