@@ -24,10 +24,10 @@
 
 pub mod client;
 pub mod crypto;
+pub mod frames;
 
 // Phase 1.2 modules (to be implemented)
 // pub mod state;
-// pub mod frames;
 
 // Phase 1.3 modules (to be implemented)
 // pub mod mutations;

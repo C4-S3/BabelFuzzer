@@ -28,13 +28,14 @@ tonic = "0.14"
 prost = "0.14"
 tonic-prost = "0.14"
 
-# QUIC/HTTP/3 support (Phase 1 - In Progress)
+# QUIC/HTTP/3 support (Phase 1 - ACTIVE IMPLEMENTATION)
 # See ROADMAP.md Phase 1 and docs/QUIC_FUZZER_PLAN.md for implementation timeline
-quinn = "0.11"                          # QUIC protocol implementation (RFC 9000) - ACTIVE in Phase 1.1
-h3 = "0.0.8"                            # HTTP/3 frame handling (RFC 9114) - for HTTP/3 fuzzing (Phase 1.3)
-rustls = { version = "0.23", features = ["ring"] }  # TLS 1.3 implementation with ring crypto - ACTIVE in Phase 1.1
-rustls-native-certs = "0.8"             # Native system certificates - ACTIVE in Phase 1.1
-url = "2.5"                             # URL parsing for QUIC endpoints - ACTIVE in Phase 1.1
+# Note: Using quinn 0.11 for QUIC functionality (HTTP/3 client implementation paused pending library compatibility)
+quinn = "0.11"                          # QUIC protocol implementation (RFC 9000) - ACTIVE
+rustls = { version = "0.23", features = ["ring"] }  # TLS 1.3 implementation with ring crypto - ACTIVE
+rustls-native-certs = "0.8"             # Native system certificates - ACTIVE
+webpki-roots = "0.26"                   # WebPKI root certificates - ACTIVE
+url = "2.5"                             # URL parsing for QUIC endpoints - ACTIVE
 
 # Common utilities
 bytes = "1.11"              # Efficient byte buffer handling

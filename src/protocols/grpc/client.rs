@@ -1,6 +1,9 @@
 // gRPC client implementation
 use anyhow::{Context, Result};
+use async_trait::async_trait;
 use tonic::transport::Channel;
+use crate::core_types::FuzzerError;
+use crate::protocols::traits::Protocol;
 
 // Include the generated proto code
 pub mod echo {
@@ -48,6 +51,50 @@ impl GrpcClient {
     /// Get the endpoint this client is connected to
     pub fn endpoint(&self) -> &str {
         &self.endpoint
+    }
+}
+
+/// Implementation of the Protocol trait for GrpcClient
+#[async_trait]
+impl Protocol for GrpcClient {
+    type Request = Vec<u8>;
+    type Response = Vec<u8>;
+    type Error = FuzzerError;
+
+    async fn connect(&mut self, target: &str) -> Result<(), Self::Error> {
+        // Create a new channel
+        let channel = Channel::from_shared(target.to_string())
+            .map_err(|e| FuzzerError::Protocol(format!("Invalid endpoint URL: {}", e)))?
+            .connect()
+            .await
+            .map_err(|e| FuzzerError::Protocol(format!("Failed to connect to gRPC server: {}", e)))?;
+
+        self.endpoint = target.to_string();
+        self.channel = channel;
+        Ok(())
+    }
+
+    async fn send_request(&mut self, req: Self::Request) -> Result<Self::Response, Self::Error> {
+        self.echo(req)
+            .await
+            .map_err(|e| FuzzerError::Protocol(format!("Failed to send gRPC request: {}", e)))
+    }
+
+    async fn discover_schema(&mut self) -> Result<serde_json::Value, Self::Error> {
+        // TODO: Implement full gRPC reflection-based schema discovery
+        // For now, return a basic schema for the Echo service
+        Ok(serde_json::json!({
+            "protocol": "grpc",
+            "services": [{
+                "name": "echo.Echo",
+                "methods": [{
+                    "name": "EchoMessage",
+                    "input_type": "echo.EchoRequest",
+                    "output_type": "echo.EchoResponse"
+                }]
+            }],
+            "endpoint": self.endpoint
+        }))
     }
 }
 
