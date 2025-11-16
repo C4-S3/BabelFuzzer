@@ -47,7 +47,7 @@ async fn test_grpc_echo_server() {
 
     // Spawn server on a background task
     let server_handle = tokio::spawn(async {
-        let addr = "[::1]:50051".parse().unwrap();
+        let addr = "127.0.0.1:50051".parse().unwrap();
         let echo_service = server::EchoService::default();
 
         Server::builder()
@@ -61,7 +61,7 @@ async fn test_grpc_echo_server() {
     sleep(Duration::from_millis(100)).await;
 
     // Create client and send request
-    let mut client = EchoClient::connect("http://[::1]:50051")
+    let mut client = EchoClient::connect("http://127.0.0.1:50051")
         .await
         .expect("Failed to connect to server");
 

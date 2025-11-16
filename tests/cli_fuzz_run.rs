@@ -40,7 +40,7 @@ async fn test_cli_fuzz_run() {
 
     // Spawn server on a background task
     let _server_handle = tokio::spawn(async {
-        let addr = "[::1]:50057".parse().unwrap();
+        let addr = "127.0.0.1:50057".parse().unwrap();
         let echo_service = server::EchoService::default();
 
         Server::builder()
@@ -69,7 +69,7 @@ async fn test_cli_fuzz_run() {
             "proto-fuzzer",
             "--",
             "--target",
-            "http://[::1]:50057",
+            "http://127.0.0.1:50057",
             "--iterations",
             "5",
             "--timeout-ms",
