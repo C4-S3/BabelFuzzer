@@ -10,7 +10,7 @@ use tracing_subscriber;
 
 #[derive(Parser, Debug)]
 #[command(name = "proto-fuzzer")]
-#[command(about = "A protocol fuzzer for gRPC and HTTP/3", long_about = None)]
+#[command(about = "A protocol fuzzer for gRPC services (HTTP/3 support planned)", long_about = None)]
 struct Args {
     /// Target service to fuzz (e.g., http://localhost:50051)
     #[arg(short, long)]
